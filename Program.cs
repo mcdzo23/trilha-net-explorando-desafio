@@ -1,25 +1,62 @@
-﻿using System.Text;
-using DesafioProjetoHospedagem.Models;
+using System;
+using System.Collections.Generic;
 
-Console.OutputEncoding = Encoding.UTF8;
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Cria os hóspedes
+        List<Pessoa> hospedes = new()
+        {
+            new Pessoa("Hóspede 1"),
+            new Pessoa("Hóspede 2")
+        };
 
-// Cria os modelos de hóspedes e cadastra na lista de hóspedes
-List<Pessoa> hospedes = new List<Pessoa>();
+        // Cria a suíte
+        Suite suite = new(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
+        // Cria uma nova reserva, passando a suíte e os hóspedes
+        Reserva reserva = new(diasReservados: 5, suite: suite, hospedes: hospedes);
 
-hospedes.Add(p1);
-hospedes.Add(p2);
+        // Aqui você pode adicionar mais lógica, como calcular o valor total da reserva
+        Console.WriteLine($"Reserva para {reserva.DiasReservados} dias na suíte {suite.TipoSuite}.");
+    }
+}
 
-// Cria a suíte
-Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
+internal class Pessoa
+{
+    public Pessoa(string nome)
+    {
+        Nome = nome;
+    }
 
-// Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 5);
-reserva.CadastrarSuite(suite);
-reserva.CadastrarHospedes(hospedes);
+    public string Nome { get; }
+}
 
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+internal class Suite
+{
+    public Suite(string tipoSuite, int capacidade, int valorDiaria)
+    {
+        TipoSuite = tipoSuite;
+        Capacidade = capacidade;
+        ValorDiaria = valorDiaria;
+    }
+
+    public string TipoSuite { get; }
+    public int Capacidade { get; }
+    public int ValorDiaria { get; }
+}
+
+internal class Reserva
+{
+    public Reserva(int diasReservados, Suite suite, List<Pessoa> hospedes)
+    {
+        DiasReservados = diasReservados;
+        SuiteReservada = suite;
+        Hospedes = hospedes;
+    }
+
+    public int DiasReservados { get; }
+    public Suite SuiteReservada { get; }
+    public List<Pessoa> Hospedes { get; }
+}
